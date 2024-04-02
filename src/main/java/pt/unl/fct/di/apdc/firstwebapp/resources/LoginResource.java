@@ -31,6 +31,16 @@ public class LoginResource {
 	public LoginResource() {
 	} // Nothing to be done here
 
+	@GET
+	@Path("/{username}")
+	public Response checkUsernameAvailable(@PathParam("username") String username) {
+		if (username.equals("jleitao")) {
+			return Response.ok().entity(g.toJson(false)).build();
+		} else {
+			return Response.ok().entity(g.toJson(true)).build();
+		}
+	}
+
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -41,16 +51,6 @@ public class LoginResource {
 			return Response.ok(g.toJson(at)).build();
 		}
 		return Response.status(Status.FORBIDDEN).entity("Incorrect username or password.").build();
-	}
-
-	@GET
-	@Path("/{username}")
-	public Response checkUsernameAvailable(@PathParam("username") String username) {
-		if (username.equals("jleitao")) {
-			return Response.ok().entity(g.toJson(false)).build();
-		} else {
-			return Response.ok().entity(g.toJson(true)).build();
-		}
 	}
 
 }

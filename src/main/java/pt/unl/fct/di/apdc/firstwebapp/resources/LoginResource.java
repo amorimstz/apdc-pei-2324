@@ -12,6 +12,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status; // será preciso mudar para  o import cloud.datastore?
 
+import org.apache.commons.codec.digest.DigestUtils;
+
+import com.google.cloud.Timestamp;
+import com.google.cloud.datastore.Datastore;
+import com.google.cloud.datastore.DatastoreOptions;
+import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.Key;
 import com.google.gson.Gson;
 
 import pt.unl.fct.di.apdc.firstwebapp.util.AuthToken;
@@ -25,14 +32,16 @@ public class LoginResource {
 	 * Logger Object
 	 */
 	private static final Logger LOG = Logger.getLogger(LoginResource.class.getName());
+	private final Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 
 	private final Gson g = new Gson();
 
 	public LoginResource() {
-	} // Nothing to be done here
+
+	}
 
 	@GET
-	@Path("/{username}")
+	@Path("/{username}") // PROBABLY WILL REMOVE THIS METHOD
 	public Response checkUsernameAvailable(@PathParam("username") String username) {
 		if (username.equals("jleitao")) {
 			return Response.ok().entity(g.toJson(false)).build();
@@ -51,6 +60,33 @@ public class LoginResource {
 			return Response.ok(g.toJson(at)).build();
 		}
 		return Response.status(Status.FORBIDDEN).entity("Incorrect username or password.").build();
+	}
+
+	@POST
+	@Path("/v1")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response doLoginV1(LoginData data) {
+		LOG.fine("Attempt to login user " + data.username);
+
+		Key userKey = datastore.newKeyFactory().setKind("User").newKey(data.username);
+		Entity user = datastore.get(userKey);
+		if (user != null) {
+			String hashedPwd = (String) user.getString("user_pwd");
+			if (hashedPwd.equals(DigestUtils.sha512Hex(data.password))) {
+				user = Entity.newBuilder(user).set("user_login_time", Timestamp.now()).build();
+				datastore.update(user);
+				LOG.info("User '" + data.username + "' logged in successfully.");
+				AuthToken token = new AuthToken(data.username);
+				return Response.ok(g.toJson(token)).build();
+			} else {
+				LOG.warning("Wrong password for user '" + data.username + "'.");
+				return Response.status(Status.FORBIDDEN).build();
+			}
+		} else {
+			LOG.warning("Failed to login user '" + data.username + "'.");
+			return Response.status(Status.FORBIDDEN).build();
+		}
+
 	}
 
 }

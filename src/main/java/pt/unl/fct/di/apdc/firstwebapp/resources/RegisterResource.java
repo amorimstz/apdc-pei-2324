@@ -89,7 +89,7 @@ public class RegisterResource {
 		Transaction txn = datastore.newTransaction();
 		try {
 			Key userKey = datastore.newKeyFactory().setKind("User").newKey(data.username);
-			if (checkAvailability(data, userKey)) {
+			if (checkUsernameAvailability(data, userKey)) {
 				Entity user = Entity.newBuilder(userKey).set("user_pwd", DigestUtils.sha512Hex(data.pwd))
 						.set("user_creation_time", Timestamp.now()).set("user_name", data.name)
 						.set("user_email", data.email).set("user_phone", data.phone).build();
@@ -111,7 +111,7 @@ public class RegisterResource {
 		}
 	}
 
-	private boolean checkAvailability(RegisterData data, Key userKey) {
+	private boolean checkUsernameAvailability(RegisterData data, Key userKey) {
 		if (datastore.get(userKey) != null)
 			return false;
 		return true;

@@ -3,7 +3,7 @@ package pt.unl.fct.di.apdc.firstwebapp.util;
 public class LoginData {
 
 	public String username;
-	public String password;
+	public String pwrd;
 
 	public LoginData() {
 
@@ -11,7 +11,7 @@ public class LoginData {
 
 	public LoginData(String username, String password) {
 		this.username = username;
-		this.password = password;
+		this.pwrd = password;
 
 	}
 

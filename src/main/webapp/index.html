@@ -1,26 +1,77 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
-  <head>
-    <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
-    <title>My First Web App</title>
-  </head>
+<head>
+<meta http-equiv="content-type"
+	content="application/xhtml+xml; charset=UTF-8" />
+<title>My First Web App</title>
+<style>
+body {
+	background-color: #000;
+	color: #fff;
+	font-family: Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+}
 
-  <body>
-    <h1>Welcome to this simple web application !</h1>
+h1 {
+	color: #ff0000;
+	text-align: center;
+}
 
-    <table>
-      <tr>
-        <td colspan="2" style="font-weight:bold;">Available Services:</td>        
-      </tr>
-      <tr>
-        <td><a href='/rest/utils/hello'>Say hello !</a></td><td>(greetings)</td>
-      </tr>
-      <tr>
-        <td><a href='/rest/utils/time'>What time is it?</a></td><td>(see server time)</td>
-      </tr>
-    </table>
-  </body>
-  <footer>
-  	Copyright: FCT NOVA, APC-PEI  2023/2024
-  </footer>
+table {
+	margin: 0 auto;
+	border-collapse: collapse;
+	border: 2px solid #ff0000;
+	width: 60%;
+	margin-top: 20px;
+}
+
+td, th {
+	border: 1px solid #ff0000;
+	padding: 10px;
+	text-align: center;
+}
+
+a {
+	color: #ff0000;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+a:hover {
+	color: #ff9999; /* Change color on hover */
+	transform: scale(1.2); /* Increase size on hover */
+}
+
+footer {
+	background-color: #ff0000;
+	color: #fff;
+	text-align: center;
+	padding: 10px 0;
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+}
+</style>
+</head>
+
+<body>
+	<h1>Welcome to this simple web application!</h1>
+
+	<table>
+		<tr>
+			<td colspan="2" style="font-weight: bold;">Available Services:</td>
+		</tr>
+		<tr>
+			<td><a href='/rest/utils/hello'>Say hello!</a></td>
+			<td>(greetings)</td>
+		</tr>
+		<tr>
+			<td><a href='/rest/utils/time'>What time is it?</a></td>
+			<td>(see server time)</td>
+		</tr>
+	</table>
+
+	<footer> Copyright: FCT NOVA, APC-PEI 2023/2024 </footer>
+</body>
 </html>

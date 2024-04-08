@@ -54,6 +54,8 @@ public class RegisterData {
 	}
 
 	public boolean isValidPhone() {
-		return (!phone.isBlank());
+		String regex = "^[^a-zA-Z]*$";
+		return (!phone.isBlank() && phone.matches(regex));
 	}
+
 }

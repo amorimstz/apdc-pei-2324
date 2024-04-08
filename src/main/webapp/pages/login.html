@@ -10,7 +10,6 @@
 <body>
 	<h1>Login to Your Account</h1>
 
-	<!-- Div to display error messages -->
 	<div id="errorMessage" style="color: red;"></div>
 
 	<form id="loginForm">
@@ -33,13 +32,11 @@
 
 	<script>
     function login() {
-        // Retrieve form data
         var formData = {
             username: document.getElementById('username').value,
             pwrd: document.getElementById('pwrd').value
         };
 
-        // Send POST request using fetch
         fetch('/rest/login', {
             method: 'POST',
             headers: {
@@ -49,13 +46,12 @@
         })
         .then(response => {
             if (response.ok) {
-                // Handle successful login
                 console.log('Login successful');
-                // Redirect or perform other actions as needed
+
                 window.location.href = 'userDashboard.html';
                 alert("Login Successful. Welcome!")
             } else {
-                // Handle failed login
+
                 response.text().then(errorMessage => {
                     console.error('Login failed:', errorMessage);
                     document.getElementById('errorMessage').textContent = errorMessage;

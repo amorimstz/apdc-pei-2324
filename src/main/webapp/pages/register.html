@@ -8,33 +8,41 @@
 </head>
 
 <body>
-	<h1>Please fill the following fields to create your account</h1>
+	<h1>Please fill the following fields to create your account.
+		Fields marked with * are mandatory, the rest can be added later.</h1>
 
 	<form id="registerForm">
 		<table>
 			<tr>
-				<td><label for="username">Username:</label></td>
+				<td><label for="username">Username <span> *</span>:
+				</label></td>
 				<td><input type="text" id="username" name="username" required></td>
 			</tr>
 			<tr>
-				<td><label for="pwrd">Password:</label></td>
+				<td><label for="pwrd">Password <span> *</span>:
+				</label></td>
 				<td><input type="password" id="pwrd" name="pwrd" required></td>
 			</tr>
 			<tr>
-				<td><label for="confirmPwrd">Confirm Password:</label></td>
+				<td><label for="confirmPwrd">Confirm Password <span>
+							*</span>:
+				</label></td>
 				<td><input type="password" id="confirmPwrd" name="confirmPwrd"
 					required></td>
 			</tr>
 			<tr>
-				<td><label for="name">Name:</label></td>
+				<td><label for="name">Name <span> *</span>:
+				</label></td>
 				<td><input type="text" id="name" name="name" required></td>
 			</tr>
 			<tr>
-				<td><label for="email">E-mail:</label></td>
+				<td><label for="email">E-mail <span> *</span>:
+				</label></td>
 				<td><input type="text" id="email" name="email" required></td>
 			</tr>
 			<tr>
-				<td><label for="phone">Phone:</label></td>
+				<td><label for="phone">Phone<span> *</span>:
+				</label></td>
 				<td><input type="text" id="phone" name="phone" required></td>
 			</tr>
 			<tr>
@@ -55,6 +63,7 @@
 					value="Public"> <label for="Public">Public</label><br>
 					<input type="radio" id="Private" name="profileVisibility"
 					value="Private"> <label for="Private">Private</label><br>
+				</td>
 			</tr>
 			<tr>
 				<td><label for="workplace">Workplace:</label></td>
@@ -74,49 +83,63 @@
 	<footer>Copyright: FCT NOVA, APC-PEI 2023/2024</footer>
 
 	<script>
-	function register() {
-	    // Retrieve form data
-	    var formData = {
-	        username: document.getElementById('username').value,
-	        pwrd: document.getElementById('pwrd').value,
-	        confirmPwrd: document.getElementById('confirmPwrd').value,
-	        name: document.getElementById('name').value,
-	        email: document.getElementById('email').value,
-	        phone: document.getElementById('phone').value,
-	        address: document.getElementById('address').value,
-	        occupation: document.getElementById('occupation').value,
-	        profileVisibility: document.querySelector('input[name="profileVisibility"]:checked').value,
-	        workplace: document.getElementById('workplace').value,
-	        postalCode: document.getElementById('postalCode').value,
-	        NIF: document.getElementById('NIF').value
-	    };
+    function register() {
+        // Retrieve form data
+        var formData = {
+            username: document.getElementById('username').value,
+            pwrd: document.getElementById('pwrd').value,
+            confirmPwrd: document.getElementById('confirmPwrd').value,
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            address: document.getElementById('address').value || '', // Fill with empty string if left empty
+            occupation: document.getElementById('occupation').value || '', // Fill with empty string if left empty
+            profileVisibility: document.querySelector('input[name="profileVisibility"]:checked') ? document.querySelector('input[name="profileVisibility"]:checked').value : '', // Fill with empty string if left empty
+            workplace: document.getElementById('workplace').value || '', // Fill with empty string if left empty
+            postalCode: document.getElementById('postalCode').value || '', // Fill with empty string if left empty
+            NIF: document.getElementById('NIF').value || '' // Fill with empty string if left empty
+        };
 
-	    // Send POST request using fetch
-	    fetch('/rest/register', {
-	        method: 'POST',
-	        headers: {
-	            'Content-Type': 'application/json'
-	        },
-	        body: JSON.stringify(formData)
-	    })
-	    .then(response => {
-	        if (response.ok) {
-	            // Handle successful login
-	            console.log('Registration successful');
-	            // Redirect or perform other actions as needed
-	            alert('Registration Successful!');
-	            window.location.href = '../index.html';
-	        } else {
-	            // Handle failed login
-	            console.error('Registration failed');
-	            // Display error message or perform other actions as needed
-	        }
-	    })
-	    .catch(error => {
-	        console.error('Error:', error);
-	        // Handle network errors or other issues
-	    });
-	}
-    </script>
+        // Check required fields
+        var requiredFields = ['username', 'pwrd', 'confirmPwrd', 'name', 'email', 'phone'];
+        for (var i = 0; i < requiredFields.length; i++) {
+            var field = requiredFields[i];
+            if (!formData[field]) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+        }
+
+        // Send POST request using fetch
+        fetch('/rest/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => {
+            if (response.ok) {
+                // Handle successful registration
+                console.log('Registration successful');
+                // Redirect or perform other actions as needed
+                alert('Registration Successful!');
+                window.location.href = '../index.html';
+            } else {
+                // Handle failed registration
+                response.text().then(errorMessage => {
+                    console.error('Registration failed: ' + errorMessage);
+                    // Display error message as a popup
+                    alert('Registration Failed: ' + errorMessage);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Handle network errors or other issues
+        });
+    }
+</script>
+
 </body>
 </html>

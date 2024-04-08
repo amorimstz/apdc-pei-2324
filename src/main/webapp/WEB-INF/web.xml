@@ -56,6 +56,18 @@
 		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
 
+	<servlet>
+		<servlet-name>InitServlet</servlet-name>
+		<servlet-class>pt.unl.fct.di.apdc.firstwebapp.Servlets.InitServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>InitServlet</servlet-name>
+		<url-pattern>/init</url-pattern>
+	</servlet-mapping>
+
+
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>Restricted Area</web-resource-name>

@@ -82,21 +82,6 @@ public class RemoveUserResource {
 			if (txn.isActive())
 				txn.rollback();
 		}
-
-		// ---------
-//		LOG.fine("Attempt to remove user " + data.deletingUsername);
-//
-//		Key userKey = datastore.newKeyFactory().setKind("User").newKey(data.deletingUsername);
-//		Entity user = datastore.get(userKey);
-//
-//		if (user != null) {
-//			datastore.delete(userKey);
-//			LOG.info("User '" + data.deletingUsername + "' deleted successfully.");
-//			return Response.ok().entity("User '" + data.deletingUsername + "' deleted successfully.").build();
-//		} else {
-//			LOG.warning("Failed to remove user '" + data.deletingUsername + "'.");
-//			return Response.status(Status.FORBIDDEN).entity("Can't remove inexistent user.").build();
-//		}
 	}
 
 	private boolean hasPermissionToDelete(Entity user, Entity deletingUser) {

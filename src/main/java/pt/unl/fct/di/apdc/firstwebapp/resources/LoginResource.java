@@ -74,31 +74,4 @@ public class LoginResource {
 		String hashedInputPWD = Hashing.sha512().hashString(data.pwrd, StandardCharsets.UTF_8).toString();
 		return (hashedPWD.equals(hashedInputPWD));
 	}
-
-//	String value = cookie.getValue();
-//	String[] values = value.split("\\.");
-//
-//	String signatureNew = SignatureUtils.calculateHMac(key,
-//			values[0] + "." + values[1] + "." + values[2] + "." + values[3] + "." + values[4]);
-//	String signatureOld = values[5];
-//
-//	if (!signatureNew.equals(signatureOld)) {
-//		return false;
-//	}
-//
-//	int neededRole = convertRole(role);
-//	int userInSessionRole = convertRole(values[2]);
-//
-//	if (userInSessionRole < neededRole) {
-//		return false;
-//	}
-//
-//	if (System.currentTimeMillis() > (Long.valueOf(values[3]) + Long.valueOf(values[4]) * 1000)) {
-//
-//		return false;
-//	}
-//
-//	return true;
-//}
-
 }

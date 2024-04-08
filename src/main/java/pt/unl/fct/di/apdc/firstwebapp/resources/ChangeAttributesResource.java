@@ -68,7 +68,11 @@ public class ChangeAttributesResource {
 			}
 
 			userToChange = Entity.newBuilder(userToChange).set("user_phone", data.newPhone)
-					.set("user_address", data.newAddress).set("user_occupation", data.newOccupation).build();
+					.set("user_address", data.newAddress).set("user_postalCode", data.newPostalCode)
+					.set("user_occupation", data.newOccupation).set("user_name", data.newName)
+					.set("user_email", data.newEmail).set("user_profileVisibility", data.newProfileVisibility)
+					.set("user_workplace", data.newWorkplace).set("user_NIF", data.newNIF).build();
+
 			txn.update(userToChange);
 			LOG.info("User attributes successfully changed");
 			txn.commit();
@@ -87,7 +91,8 @@ public class ChangeAttributesResource {
 
 		if (userRole.equals(SU)) {
 			return true;
-		} else if (userRole.equals(GA) && (userToChangeRole.equals(GBO) || userToChangeRole.equals(U))) {
+		} else if ((userRole.equals(GA) && (userToChangeRole.equals(GBO) || userToChangeRole.equals(U)))
+				|| ((userRole.equals(GBO) || userRole.equals(U)) && userToChangeRole.equals(U))) {
 			return true;
 		}
 		return false;

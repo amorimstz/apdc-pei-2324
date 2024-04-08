@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Change User Attributes</title>
+<link rel="stylesheet" type="text/css" href="../styles.css">
+<style>
+body {
+	padding-top: 20px;
+}
+
+#changeAttributesForm {
+	text-align: center;
+	margin-top: 20px;
+}
+
+h2 {
+	color: red;
+	margin: 0 auto;
+	width: fit-content;
+	margin-bottom: 20px;
+}
+
+button[type="submit"] {
+	margin-top: 20px;
+}
+
+table {
+	margin: 0 auto;
+}
+
+.targetedUserTable {
+	width: fit-content;
+	margin: 0 auto;
+	border-collapse: collapse;
+	margin-bottom: 20px; /* Add margin to bottom */
+}
+
+.targetedUserTable td {
+	padding: 5px;
+	border: 1px solid red;
+}
+</style>
+</head>
+<body>
+	<h2>Change User Attributes</h2>
+	<form id="changeAttributesForm">
+		<table>
+			<tr>
+				<td><label for="changingUsername">Username to change:</label></td>
+				<td><input type="text" id="changingUsername"
+					name="changingUsername" required></td>
+			</tr>
+			<tr>
+				<td><label for="newPhone">New Phone:</label></td>
+				<td><input type="text" id="newPhone" name="newPhone" required></td>
+			</tr>
+			<tr>
+				<td><label for="newAddress">New Address:</label></td>
+				<td><input type="text" id="newAddress" name="newAddress"
+					required></td>
+			</tr>
+			<tr>
+				<td><label for="newOccupation">New Occupation:</label></td>
+				<td><input type="text" id="newOccupation" name="newOccupation"
+					required></td>
+			</tr>
+			<tr>
+				<td><label for="newPostalCode">New Postal Code:</label></td>
+				<td><input type="text" id="newPostalCode" name="newPostalCode"
+					required></td>
+			</tr>
+			<tr>
+				<td><label for="newName">New Name:</label></td>
+				<td><input type="text" id="newName" name="newName" required></td>
+			</tr>
+			<tr>
+				<td><label for="newEmail">New Email:</label></td>
+				<td><input type="email" id="newEmail" name="newEmail" required></td>
+			</tr>
+			<tr>
+				<td><label for="newProfileVisibility">New Profile
+						Visibility:</label></td>
+				<td><input type="radio" id="private"
+					name="newProfileVisibility" value="Private" required> <label
+					for="private">Private</label><br> <input type="radio"
+					id="public" name="newProfileVisibility" value="Public"> <label
+					for="public">Public</label></td>
+			</tr>
+			<tr>
+				<td><label for="newWorkplace">New Workplace:</label></td>
+				<td><input type="text" id="newWorkplace" name="newWorkplace"
+					required></td>
+			</tr>
+			<tr>
+				<td><label for="newNIF">New NIF:</label></td>
+				<td><input type="text" id="newNIF" name="newNIF" required></td>
+			</tr>
+		</table>
+		<button type="button" value="Submit" onclick="changeAttributes()">
+			Submit Changes</button>
+	</form>
+
+	<script>
+	function changeAttributes() {
+		
+    // Retrieve form data
+    var formData = {
+        changingUsername: document.getElementById('changingUsername').value,
+        newPhone: document.getElementById('newPhone').value,
+        newAddress: document.getElementById('newAddress').value,
+        newPostalCode: document.getElementById('newPostalCode').value,
+        newOccupation: document.getElementById('newOccupation').value,
+        newName: document.getElementById('newName').value,
+        newEmail: document.getElementById('newEmail').value,
+        newProfileVisibility: document.querySelector('input[name="newProfileVisibility"]:checked').value,
+        newWorkplace: document.getElementById('newWorkplace').value,
+        newNIF: document.getElementById('newNIF').value
+    };
+    
+    fetch('/rest/changeattributes', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data);
+        alert("User attributes changed successfully"); // Show success message
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error occurred. Please try again.');
+        // Handle errors here, such as showing an error message to the user
+    });
+};
+
+</script>

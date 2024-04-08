@@ -1,0 +1,74 @@
+/* Body styles */
+body {
+	background-color: #000;
+	color: #fff;
+	font-family: Arial, sans-serif;
+	margin: auto;
+	padding: 50px 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+}
+
+/* Header styles */
+h1 {
+	color: #ff0000;
+	text-align: center;
+}
+
+/* Table styles */
+table {
+	margin: 0 auto;
+	border-collapse: collapse;
+	border: 2px solid #ff0000;
+	width: 60%;
+	margin-top: 20px;
+}
+
+td, th {
+	border: 1px solid #ff0000;
+	padding: 10px;
+	text-align: center;
+}
+
+/* Link styles */
+a {
+	color: #ff0000;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+a:hover {
+	color: #ff9999; /* Change color on hover */
+	transform: scale(1.2); /* Increase size on hover */
+}
+
+/* Footer styles */
+footer {
+	background-color: #ff0000;
+	color: #fff;
+	text-align: center;
+	padding: 10px 0;
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+}
+
+/* Button styles */
+.action-button {
+	background-color: transparent;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	color: #ff0000;
+	font-weight: bold;
+	transition: color 0.3s, transform 0.3s;
+	margin: 10px; /* Add margin to separate buttons */
+}
+
+.action-button:hover {
+	color: #ff9999; /* Change color on hover */
+	transform: scale(1.2); /* Increase size on hover */
+}

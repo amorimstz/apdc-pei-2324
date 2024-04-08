@@ -54,9 +54,6 @@ public class RegisterResource {
 		if (!data.isValidPhone()) {
 			return Response.status(Status.BAD_REQUEST).entity("Please use a valid phone number.").build();
 		}
-		if (!data.isValidRegistry()) { // probs not needed
-			return Response.status(Status.BAD_REQUEST).entity("Please fill all the mandatory fields.").build();
-		}
 
 		Transaction txn = datastore.newTransaction();
 		try {

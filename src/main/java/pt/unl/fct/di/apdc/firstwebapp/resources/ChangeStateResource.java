@@ -28,8 +28,11 @@ public class ChangeStateResource {
 	public static final String GA = "App Manager";
 	public static final String GBO = "Back Office Manager";
 	public static final String U = "User";
+	private static final String ACTIVE = "ACTIVE";
+	private static final String INACTIVE = "INACTIVE";
 
 	private static final Logger LOG = Logger.getLogger(LoginResource.class.getName());
+
 	private final Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 
 	public ChangeStateResource() {
@@ -65,6 +68,10 @@ public class ChangeStateResource {
 				LOG.warning("User does not have permission to change states.");
 				return Response.status(Status.FORBIDDEN)
 						.entity("You don't have permission to change the state of this user.").build();
+			}
+			if (!data.newState.equals(ACTIVE) && !data.newState.equals(INACTIVE)) {
+				LOG.warning("Invalid new role chosen.");
+				return Response.status(Status.FORBIDDEN).entity("Please choose a valid role.").build();
 			}
 
 			userToChange = Entity.newBuilder(userToChange).set("user_state", data.newState).build();

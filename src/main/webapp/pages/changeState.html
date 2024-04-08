@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="../styles.css">
+<title>Change User State</title>
+</head>
+<body>
+	<h2>Change User State</h2>
+	<form id="changeStateForm">
+		<label for="username">Username:</label><br> <input type="text"
+			id="username" name="username" required><br> <label
+			for="newState">New State:</label><br> <select id="newState"
+			name="newState" required>
+			<option value="ACTIVE">Active</option>
+			<option value="INACTIVE">Inactive</option>
+		</select><br> <br>
+		<button type="submit">Change State</button>
+	</form>
+
+	<script>
+document.getElementById("changeStateForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    var username = document.getElementById("username").value;
+    var newState = document.getElementById("newState").value;
+    
+    fetch("/rest/changestate", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            username: username,
+            newState: newState
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Failed to change user state");
+        }
+        return response.text();
+    })
+    .then(data => {
+        alert(data);
+        // Optionally, redirect to another page or take further action upon success
+    })
+    .catch(error => {
+        alert(error.message);
+    });
+});
+</script>
+</body>
+</html>

@@ -28,6 +28,7 @@ public class LoginResource {
 
 	// Settings that must be in the database
 	private static final String key = "dhsjfhndkjvnjdsdjhfkjdsjfjhdskjhfkjsdhfhdkjhkfajkdkajfhdkmc";
+	private static final String INACTIVE = "INACTIVE";
 
 	private static final Logger LOG = Logger.getLogger(LoginResource.class.getName());
 	private final Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
@@ -43,8 +44,12 @@ public class LoginResource {
 		Key userKey = datastore.newKeyFactory().setKind("User").newKey(data.username);
 		Entity user = datastore.get(userKey);
 
-		if (!checkPassword(data, user)) {
+		if (user == null || !checkPassword(data, user)) {
 			return Response.status(Status.FORBIDDEN).entity("Incorrect username or password.").build();
+		}
+
+		if (user.getString("user_state").equals(INACTIVE)) {
+			return Response.status(Status.FORBIDDEN).entity("User currently inactive.").build();
 		}
 
 		String id = UUID.randomUUID().toString();

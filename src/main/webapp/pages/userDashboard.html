@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome Back</title>
+<link rel="stylesheet" type="text/css" href="../styles.css">
+</head>
+<body>
+	<header>
+		<h1>Welcome Back!</h1>
+	</header>
+	<main>
+		<button class="action-button" onclick="redirectToUserAttributes()">Change
+			User Attributes</button>
+		<button class="action-button" onclick="redirectToPasswordChange()">Change
+			Password</button>
+		<button class="action-button" onclick="redirectToRoleChange()">Change
+			User Roles</button>
+		<button class="action-button" onclick="redirectToStateChange()">Change
+			User State</button>
+		<button class="action-button" onclick="redirectToRemoveUser()">Get
+			rid of someone...</button>
+		<button class="action-button" onclick="logout()">Log Out</button>
+	</main>
+
+	<script>
+        function redirectToUserAttributes() {
+            window.location.href = "changeAttributes.html";
+        }
+
+        function redirectToPasswordChange() {
+            window.location.href = "changePassword.html";
+        }
+
+        function redirectToRoleChange() {
+            window.location.href = "changeRole.html";
+        }
+
+        function redirectToStateChange() {
+            window.location.href = "changeState.html";
+        }
+
+        function redirectToRemoveUser() {
+            window.location.href = "removeUser.html";
+        }
+
+        function logout() {
+            fetch("/rest/logout", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = "login.html";
+                    alert("See you next time!");
+                } else {
+                    throw new Error("Failed to logout");
+                }
+            })
+            .catch(error => {
+                console.error("Logout failed:", error);
+            });
+        }
+    </script>
+</body>
+</html>

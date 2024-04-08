@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Remove User</title>
+<link rel="stylesheet" type="text/css" href="../styles.css">
+</head>
+<body>
+	<h2>Remove User</h2>
+	<form id="removeUserForm">
+		<label for="deletingUsername">Username to Delete:</label><br> <input
+			type="text" id="deletingUsername" name="deletingUsername" required><br>
+		<br>
+		<button type="button" onclick="removeUser()">Remove User</button>
+	</form>
+
+	<script>
+        function removeUser() {
+            // Retrieve username to delete
+            var deletingUsername = document.getElementById('deletingUsername').value;
+
+            // Confirm deletion
+            if (confirm("Are you sure you want to delete the user '" + deletingUsername + "'?")) {
+                // Send request to remove user
+                fetch("/rest/removeuser", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ deletingUsername: deletingUsername })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // User deleted successfully
+                        alert("User '" + deletingUsername + "' successfully deleted.");
+                    } else {
+                        // Error occurred while deleting user
+                        throw new Error("Failed to delete user '" + deletingUsername + "'.");
+                    }
+                })
+                .catch(error => {
+                    // Display error message
+                    alert(error.message);
+                });
+            }
+        }
+    </script>
+</body>
+</html>

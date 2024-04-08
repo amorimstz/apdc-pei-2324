@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="../styles.css">
+<title>Change User Role</title>
+</head>
+<body>
+	<h2>Change User Role</h2>
+	<form id="changeRoleForm">
+		<label for="username">Username:</label><br> <input type="text"
+			id="username" name="username" required><br> <label
+			for="newRole">New Role:</label><br> <select id="newRole"
+			name="newRole" required>
+			<option value="Super User">Super User</option>
+			<option value="App Manager">App Manager</option>
+			<option value="Back Office Manager">Back Office Manager</option>
+			<option value="User">User</option>
+		</select><br> <br>
+		<button type="submit">Change Role</button>
+	</form>
+
+	<script>
+document.getElementById("changeRoleForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    var username = document.getElementById("username").value;
+    var newRole = document.getElementById("newRole").value;
+    
+    fetch("/rest/changerole", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            username: username,
+            newRole: newRole
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Failed to change user role");
+        }
+        return response.text();
+    })
+    .then(data => {
+        alert(data);
+        // Optionally, redirect to another page or take further action upon success
+    })
+    .catch(error => {
+        alert(error.message);
+    });
+});
+</script>
+</body>
+</html>

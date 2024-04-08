@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="content-type"
+	content="application/xhtml+xml; charset=UTF-8" />
+<title>Login Page</title>
+<link rel="stylesheet" type="text/css" href="../styles.css">
+</head>
+
+<body>
+	<h1>Login to Your Account</h1>
+
+	<!-- Div to display error messages -->
+	<div id="errorMessage" style="color: red;"></div>
+
+	<form id="loginForm">
+		<table>
+			<tr>
+				<td><label for="username">Username:</label></td>
+				<td><input type="text" id="username" name="username" required></td>
+			</tr>
+			<tr>
+				<td><label for="pwrd">Password:</label></td>
+				<td><input type="password" id="pwrd" name="pwrd" required></td>
+			</tr>
+			<tr>
+				<td colspan="2" style="text-align: center;"><input
+					type="button" value="Login" onclick="login()"></td>
+			</tr>
+		</table>
+	</form>
+	<footer>Copyright: FCT NOVA, APC-PEI 2023/2024</footer>
+
+	<script>
+    function login() {
+        // Retrieve form data
+        var formData = {
+            username: document.getElementById('username').value,
+            pwrd: document.getElementById('pwrd').value
+        };
+
+        // Send POST request using fetch
+        fetch('/rest/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => {
+            if (response.ok) {
+                // Handle successful login
+                console.log('Login successful');
+                // Redirect or perform other actions as needed
+                window.location.href = 'userDashboard.html';
+                alert("Login Successful. Welcome!")
+            } else {
+                // Handle failed login
+                response.text().then(errorMessage => {
+                    console.error('Login failed:', errorMessage);
+                    document.getElementById('errorMessage').textContent = errorMessage;
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Handle network errors or other issues
+        });
+    }
+    </script>
+</body>
+</html>

@@ -9,10 +9,10 @@ public class RegisterData {
 	public String email;
 	public String phone;
 	public String address;
+	public String postalCode;
 	public String occupation;
 	public String profileVisibility;
 	public String workplace;
-	public String postalCode;
 	public String NIF;
 
 	public RegisterData() {
@@ -29,10 +29,10 @@ public class RegisterData {
 		this.email = email;
 		this.phone = phone;
 		this.address = address;
+		this.postalCode = postalCode;
 		this.occupation = occupation;
 		this.profileVisibility = profileVisibility;
 		this.workplace = workplace;
-		this.postalCode = postalCode;
 		this.NIF = NIF;
 	}
 
@@ -49,15 +49,11 @@ public class RegisterData {
 	}
 
 	public boolean isValidEmail() {
-		return (!email.isBlank() && email.contains("@"));
+		String regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}$";
+		return (!email.isBlank() && email.matches(regex));
 	}
 
 	public boolean isValidPhone() {
 		return (!phone.isBlank());
-	}
-
-	public boolean isValidRegistry() {
-		return (!username.isBlank() && !pwrd.isBlank() && !confirmPwrd.isBlank() && !email.isBlank() && !name.isBlank()
-				&& !phone.isBlank());
 	}
 }

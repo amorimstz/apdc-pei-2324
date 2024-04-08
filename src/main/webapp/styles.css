@@ -3,34 +3,45 @@ body {
 	background-color: #000;
 	color: #fff;
 	font-family: Arial, sans-serif;
-	margin: auto;
-	padding: 50px 0;
+	margin: 0; /* Reset default margin */
+	padding: 20px; /* Add padding to create space around content */
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+	justify-content: flex-start; /* Align content at the start */
 	align-items: center;
-	height: 100vh;
+	min-height: 100vh;
+	/* Use min-height instead of height for flexibility */
+	box-sizing: border-box;
+	/* Include padding and border in element's total width and height */
 }
 
 /* Header styles */
 h1 {
 	color: #ff0000;
 	text-align: center;
+	margin-top: 0; /* Add margin-top to separate from body padding */
 }
 
 /* Table styles */
 table {
-	margin: 0 auto;
 	border-collapse: collapse;
 	border: 2px solid #ff0000;
-	width: 60%;
-	margin-top: 20px;
+	width: 80%; /* Increase table width for better readability */
+	max-width: 800px;
+	/* Set maximum width to prevent excessive stretching */
+	margin: 20px auto;
+	/* Center table horizontally and add space around it */
 }
 
 td, th {
 	border: 1px solid #ff0000;
 	padding: 10px;
 	text-align: center;
+}
+
+/* Prevent line breaks for table labels */
+td label {
+	white-space: nowrap; /* Prevent line breaks */
 }
 
 /* Link styles */
@@ -41,8 +52,8 @@ a {
 }
 
 a:hover {
-	color: #ff9999; /* Change color on hover */
-	transform: scale(1.2); /* Increase size on hover */
+	color: #ff9999;
+	transform: scale(1.2);
 }
 
 /* Footer styles */
@@ -50,10 +61,12 @@ footer {
 	background-color: #ff0000;
 	color: #fff;
 	text-align: center;
-	padding: 10px 0;
+	padding: 5px 0; /* Reduced padding */
 	position: fixed;
 	bottom: 0;
 	width: 100%;
+	height: 10px; /* Adjusted height */
+	font-size: 12px; /* Reduced font size */
 }
 
 /* Button styles */
@@ -65,10 +78,10 @@ footer {
 	color: #ff0000;
 	font-weight: bold;
 	transition: color 0.3s, transform 0.3s;
-	margin: 10px; /* Add margin to separate buttons */
+	margin: 10px;
 }
 
 .action-button:hover {
-	color: #ff9999; /* Change color on hover */
-	transform: scale(1.2); /* Increase size on hover */
+	color: #ff9999;
+	transform: scale(1.2);
 }

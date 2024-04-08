@@ -4,25 +4,36 @@ public class RegisterData {
 
 	public String username;
 	public String pwrd;
+	public String confirmPwrd;
 	public String name;
 	public String email;
 	public String phone;
-	public String role;
-	public String state;
+	public String address;
+	public String occupation;
+	public String profileVisibility;
+	public String workplace;
+	public String postalCode;
+	public String NIF;
 
 	public RegisterData() {
 
 	}
 
-	public RegisterData(String username, String pwrd, String name, String email, String phone, String role,
-			String state) {
+	public RegisterData(String username, String pwrd, String confirmPwrd, String name, String email, String phone,
+			String address, String occupation, String profileVisibility, String workplace, String postalCode,
+			String NIF) {
 		this.pwrd = pwrd;
+		this.confirmPwrd = confirmPwrd;
 		this.username = username;
 		this.name = name;
 		this.email = email;
 		this.phone = phone;
-		this.role = role;
-		this.state = state;
+		this.address = address;
+		this.occupation = occupation;
+		this.profileVisibility = profileVisibility;
+		this.workplace = workplace;
+		this.postalCode = postalCode;
+		this.NIF = NIF;
 	}
 
 	public boolean isValidName() {
@@ -39,5 +50,14 @@ public class RegisterData {
 
 	public boolean isValidEmail() {
 		return (!email.isBlank() && email.contains("@"));
+	}
+
+	public boolean isValidPhone() {
+		return (!phone.isBlank());
+	}
+
+	public boolean isValidRegistry() {
+		return (!username.isBlank() && !pwrd.isBlank() && !confirmPwrd.isBlank() && !email.isBlank() && !name.isBlank()
+				&& !phone.isBlank());
 	}
 }

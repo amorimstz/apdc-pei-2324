@@ -18,11 +18,11 @@ import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Key;
 import com.google.cloud.datastore.Transaction;
 
-import pt.unl.fct.di.apdc.firstwebapp.util.ChangeStateData;
+import pt.unl.fct.di.apdc.firstwebapp.util.ChangeAttributesData;
 
-@Path("/changestate")
+@Path("/changeattributes")
 @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-public class ChangeStateResource {
+public class ChangeAttributesResource {
 
 	public static final String SU = "Super User";
 	public static final String GA = "App Manager";
@@ -32,55 +32,56 @@ public class ChangeStateResource {
 	private static final Logger LOG = Logger.getLogger(LoginResource.class.getName());
 	private final Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 
-	public ChangeStateResource() {
-
+	public ChangeAttributesResource() {
 	}
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response changeUserState(@CookieParam("session::apdc") Cookie cookie, ChangeStateData data) {
+	public Response changeUserAttriburtes(@CookieParam("session::apdc") Cookie cookie, ChangeAttributesData data) {
+
 		if (cookie == null) {
 			LOG.warning("Cookie is missing.");
 			return Response.status(Status.UNAUTHORIZED).entity("Unauthorized access.").build();
 		}
 
 		String username = cookie.getValue().split("\\.")[0];
-		String usernameToChange = data.username;
+		String usernameToChange = data.changingUsername;
 
 		Transaction txn = datastore.newTransaction();
 		try {
-			Key userKey = datastore.newKeyFactory().setKind(U).newKey(username);
+			Key userKey = datastore.newKeyFactory().setKind("User").newKey(username);
 			Entity user = txn.get(userKey);
 
-			Key userToChangeKey = datastore.newKeyFactory().setKind(U).newKey(usernameToChange);
+			Key userToChangeKey = datastore.newKeyFactory().setKind("User").newKey(usernameToChange);
 			Entity userToChange = txn.get(userToChangeKey);
 
 			if (userToChange == null) {
 				LOG.warning("Targeted user doesn't exist.");
 				txn.rollback();
-				return Response.status(Status.BAD_REQUEST).entity("Can't change the state of an inexistent user.")
+				return Response.status(Status.BAD_REQUEST).entity("Can't change the attributes of an inexistent user.")
 						.build();
 			}
-			if (!hasPermissionToChangeState(user, userToChange)) {
-				LOG.warning("User does not have permission to change states.");
+			if (!hasPermissionToChangeAttr(user, userToChange)) {
+				LOG.warning("User does not have permission to change attributes.");
 				return Response.status(Status.FORBIDDEN)
-						.entity("You don't have permission to change the state of this user.").build();
+						.entity("You don't have permission to change the attributes of this user.").build();
 			}
 
-			userToChange = Entity.newBuilder(userToChange).set("user_state", data.newState).build();
+			userToChange = Entity.newBuilder(userToChange).set("user_phone", data.newPhone)
+					.set("user_address", data.newAddress).set("user_occupation", data.newOccupation).build();
 			txn.update(userToChange);
-			LOG.info("User role changed to " + data.newState);
+			LOG.info("User attributes successfully changed");
 			txn.commit();
 
-			return Response.ok("User " + usernameToChange + "'s state successfully changed to " + data.newState + ".")
-					.build();
+			return Response.ok("User " + usernameToChange + "'s attributes successfully changed").build();
+
 		} finally {
 			if (txn.isActive())
 				txn.rollback();
 		}
 	}
 
-	private boolean hasPermissionToChangeState(Entity user, Entity userToChange) {
+	private boolean hasPermissionToChangeAttr(Entity user, Entity userToChange) {
 		String userRole = user.getString("user_role");
 		String userToChangeRole = userToChange.getString("user_role");
 

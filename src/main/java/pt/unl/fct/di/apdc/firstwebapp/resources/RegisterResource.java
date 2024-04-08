@@ -51,15 +51,30 @@ public class RegisterResource {
 		if (!data.isValidUsername()) {
 			return Response.status(Status.BAD_REQUEST).entity("Username must have at least 3 characters.").build();
 		}
+		if (!data.isValidPhone()) {
+			return Response.status(Status.BAD_REQUEST).entity("Please use a valid phone number.").build();
+		}
+		if (!data.isValidRegistry()) { // probs not needed
+			return Response.status(Status.BAD_REQUEST).entity("Please fill all the mandatory fields.").build();
+		}
 
 		Transaction txn = datastore.newTransaction();
 		try {
 			Key userKey = datastore.newKeyFactory().setKind("User").newKey(data.username);
 			if (checkUsernameAvailability(data, userKey)) {
+				if (!data.pwrd.equals(data.confirmPwrd)) {
+					LOG.warning("Passwords mismatch");
+					txn.rollback();
+					return Response.status(Status.BAD_REQUEST).entity("Passwords must match.").build();
+				}
 				Entity user = Entity.newBuilder(userKey).set("user_pwrd", DigestUtils.sha512Hex(data.pwrd))
 						.set("user_creation_time", Timestamp.now()).set("user_name", data.name)
-						.set("user_email", data.email).set("user_phone", data.phone).set("user_role", "USER")
-						.set("user_state", "INACTIVE").build();
+						.set("user_email", data.email).set("user_phone", data.phone).set("user_role", "User")
+						.set("user_state", "INACTIVE").set("user_address", data.address)
+						.set("user_occupation", data.occupation).set("user_profileVisibilit", data.profileVisibility)
+						.set("user_workplace", data.workplace).set("user_postalCode", data.postalCode)
+						.set("user_NIF", data.NIF).build();
+
 				txn.add(user);
 				LOG.info("User registered " + data.username);
 				txn.commit();
